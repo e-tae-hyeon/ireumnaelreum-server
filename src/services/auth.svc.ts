@@ -1,6 +1,10 @@
 import { Provider, Token } from "@prisma/client";
 import db from "../utils/db";
-import { generateToken } from "../utils/token";
+import {
+  generateToken,
+  RefreshTokenPayload,
+  validateToken,
+} from "../utils/token";
 
 export default class AuthService {
   async authBySocial(provider: Provider, id: string) {
@@ -50,6 +54,45 @@ export default class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async refreshToken(token: string) {
+    const { tokenId, rotationCounter } =
+      await validateToken<RefreshTokenPayload>(token);
+    const tokenItem = await db.token.findUnique({
+      where: {
+        id: tokenId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!tokenItem) throw new Error("Token not found");
+    if (!tokenItem.blocked) throw new Error("Token is blocked");
+    if (tokenItem.rotationCounter !== rotationCounter) {
+      await db.token.update({
+        where: {
+          id: tokenId,
+        },
+        data: {
+          blocked: true,
+        },
+      });
+      throw new Error("Rotation counter does not match");
+    }
+
+    tokenItem.rotationCounter += 1;
+    await db.token.update({
+      where: {
+        id: tokenId,
+      },
+      data: {
+        rotationCounter: tokenItem.rotationCounter,
+      },
+    });
+
+    return this.generateTokens(tokenItem.userId, tokenItem);
   }
 
   async createTokenItem(userId: number) {
