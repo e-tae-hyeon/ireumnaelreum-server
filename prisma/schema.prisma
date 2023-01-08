@@ -10,3 +10,37 @@ datasource db {
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
+
+enum Provider {
+  KAKAO
+}
+
+model SocialAccount {
+  id       String
+  provider Provider
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+
+  createdAt DateTime @default(now())
+
+  @@id([id, provider])
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  socialAccount SocialAccount?
+
+  Token Token[]
+
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int
+  rotationCounter Int      @default(0)
+  blocked         Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}
