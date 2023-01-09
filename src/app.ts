@@ -5,6 +5,7 @@ import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
 import api from "./routes";
+import checkUser from "./middlewares/checkUser";
 
 dotenv.config();
 const app = new Koa();
@@ -24,6 +25,7 @@ app.use(
 );
 app.use(bodyParser());
 app.use(KoaLogger());
+app.use(checkUser);
 
 router.use("/api", api.routes());
 app.use(router.routes());
