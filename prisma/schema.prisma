@@ -35,12 +35,14 @@ model User {
   Token Token[]
   Item  Item[]
 
-  createdAt DateTime @default(now())
+  createdAt   DateTime      @default(now())
+  comments    Comment[]
+  CommentLike CommentLike[]
 }
 
 model Profile {
   id       Int    @id @default(autoincrement())
-  nickname String @default("늠름이")
+  nickname String @default("낼름이")
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int  @unique
@@ -64,9 +66,10 @@ model Item {
   userId Int
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
   ItemStats ItemStats?
+  comments  Comment[]
 
   @@index([createdAt(sort: Desc)])
 }
@@ -79,4 +82,35 @@ model ItemStats {
   item          Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Comment {
+  id   Int    @id @default(autoincrement())
+  text String
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId Int
+  userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  likes       Int           @default(0)
+  CommentLike CommentLike[]
+
+  @@index([createdAt])
+}
+
+model CommentLike {
+  id      Int     @id @default(autoincrement())
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  commentId Int
+  userId    Int
+
+  @@unique([commentId, userId])
+  @@index([commentId])
 }
