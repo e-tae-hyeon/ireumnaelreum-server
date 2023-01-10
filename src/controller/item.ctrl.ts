@@ -46,6 +46,26 @@ export async function getItem(ctx: Context) {
   }
 }
 
+export async function updateItem(ctx: Context) {
+  try {
+    const { userId } = ctx.state.user;
+    const { id } = <{ id: string }>ctx.params;
+    const { title, body } = <{ title: string; body: string }>ctx.request.body;
+
+    await itemService.updateItem({
+      userId,
+      itemId: parseInt(id, 10),
+      title,
+      body,
+    });
+
+    ctx.state = 204;
+    ctx.body = null;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export async function removeItem(ctx: Context) {
   try {
     const { userId } = ctx.state.user;
