@@ -14,6 +14,23 @@ export default class CommentService {
 
     return comment;
   }
+
+  async getComments(itemId: number) {
+    const comments = await db.comment.findMany({
+      where: {
+        itemId,
+      },
+      include: {
+        user: {
+          include: {
+            Profile: true,
+          },
+        },
+      },
+    });
+
+    return comments;
+  }
 }
 
 export type CreateCommentParam = {

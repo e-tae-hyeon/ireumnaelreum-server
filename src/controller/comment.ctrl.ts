@@ -20,3 +20,15 @@ export async function writeComment(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function getComments(ctx: Context) {
+  try {
+    const { id } = <{ id: string }>ctx.params;
+
+    const comments = await commentService.getComments(parseInt(id, 10));
+
+    ctx.body = comments;
+  } catch (err) {
+    console.error(err);
+  }
+}
