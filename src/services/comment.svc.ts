@@ -15,10 +15,19 @@ export default class CommentService {
     return comment;
   }
 
-  async getComments(itemId: number) {
+  async getComments({
+    itemId,
+    userId = null,
+  }: {
+    itemId: number;
+    userId?: number | null;
+  }) {
     const comments = await db.comment.findMany({
       where: {
         itemId,
+      },
+      orderBy: {
+        id: "asc",
       },
       include: {
         user: {
@@ -29,7 +38,41 @@ export default class CommentService {
       },
     });
 
-    return comments;
+    const commentsLikedMap = userId
+      ? await this.getCommentLikedMap({
+          commentIds: comments.map((C) => C.id),
+          userId,
+        })
+      : {};
+
+    const commentsWithIsLiked = comments.map((C) => ({
+      ...C,
+      isLiked: !!commentsLikedMap[C.id],
+    }));
+
+    return commentsWithIsLiked;
+  }
+
+  async getCommentLikedMap({
+    commentIds,
+    userId,
+  }: {
+    commentIds: number[];
+    userId: number;
+  }) {
+    const list = await db.commentLike.findMany({
+      where: {
+        userId,
+        commentId: {
+          in: commentIds,
+        },
+      },
+    });
+
+    return list.reduce((acc, cur) => {
+      acc[cur.commentId] = cur;
+      return acc;
+    }, {});
   }
 }
 

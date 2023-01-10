@@ -23,9 +23,13 @@ export async function writeComment(ctx: Context) {
 
 export async function getComments(ctx: Context) {
   try {
+    const { userId } = ctx.state.user;
     const { id } = <{ id: string }>ctx.params;
 
-    const comments = await commentService.getComments(parseInt(id, 10));
+    const comments = await commentService.getComments({
+      itemId: parseInt(id, 10),
+      userId,
+    });
 
     ctx.body = comments;
   } catch (err) {
