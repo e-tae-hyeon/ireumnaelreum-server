@@ -52,6 +52,25 @@ export default class ItemService {
 
     return { items, pageInfo: { endCursor, hasNextPage } };
   }
+
+  async getItem(id: number) {
+    const item = await db.item.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: {
+          include: {
+            Profile: true,
+          },
+        },
+        ItemStats: true,
+      },
+    });
+    if (!item) throw new Error("Not found");
+
+    return item;
+  }
 }
 
 export type CreateItemParam = {

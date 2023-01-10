@@ -33,3 +33,15 @@ export async function getItems(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function getItem(ctx: Context) {
+  try {
+    const { id } = <{ id: string }>ctx.params;
+
+    const item = await itemService.getItem(parseInt(id, 10));
+
+    ctx.body = item;
+  } catch (err) {
+    console.error(err);
+  }
+}

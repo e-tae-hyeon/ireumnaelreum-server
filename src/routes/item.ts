@@ -6,5 +6,6 @@ const router = new Router();
 
 router.post("/", requireUser, ItemCtrl.writeItem);
 router.get("/", ItemCtrl.getItems);
+router.get("/:id", ItemCtrl.getItem);
 
 export default router;
