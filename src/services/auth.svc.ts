@@ -31,7 +31,7 @@ export default class AuthService {
         },
         Profile: {
           create: {
-            nickname: "늠름이",
+            nickname: "낼름이",
           },
         },
       },
