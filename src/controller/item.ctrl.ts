@@ -22,3 +22,14 @@ export async function writeItem(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function getItems(ctx: Context) {
+  try {
+    const { cursor } = <{ cursor: string }>ctx.query;
+    const items = await itemService.getItems(parseInt(cursor, 10));
+
+    ctx.body = items;
+  } catch (err) {
+    console.error(err);
+  }
+}
