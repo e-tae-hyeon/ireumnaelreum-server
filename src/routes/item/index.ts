@@ -10,5 +10,6 @@ router.use("/:id/comment", comment.routes());
 router.post("/", requireUser, ItemCtrl.writeItem);
 router.get("/", ItemCtrl.getItems);
 router.get("/:id", ItemCtrl.getItem);
+router.delete("/:id", requireUser, ItemCtrl.removeItem);
 
 export default router;

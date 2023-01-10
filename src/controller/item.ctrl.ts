@@ -45,3 +45,15 @@ export async function getItem(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function removeItem(ctx: Context) {
+  try {
+    const { userId } = ctx.state.user;
+    const { id } = <{ id: string }>ctx.params;
+
+    await itemService.removeItem(userId, parseInt(id, 10));
+
+    ctx.status = 204;
+    ctx.body = null;
+  } catch (err) {}
+}

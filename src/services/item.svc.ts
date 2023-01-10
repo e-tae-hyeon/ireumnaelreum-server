@@ -71,6 +71,23 @@ export default class ItemService {
 
     return item;
   }
+
+  async removeItem(userId: number, itemId: number) {
+    const item = await db.item.findUnique({
+      where: {
+        id: itemId,
+      },
+    });
+
+    if (!item) throw new Error("Not found");
+    if (userId !== item.userId) throw new Error("Forbiden");
+
+    await db.item.delete({
+      where: {
+        id: itemId,
+      },
+    });
+  }
 }
 
 export type CreateItemParam = {

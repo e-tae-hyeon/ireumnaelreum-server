@@ -40,7 +40,6 @@ export async function getComments(ctx: Context) {
 export async function likeComment(ctx: Context) {
   try {
     const { userId } = ctx.state.user;
-    console.log(ctx.state.user);
     const { commentId } = <{ commentId: string }>ctx.params;
 
     const comment = await commentService.likeComment(
