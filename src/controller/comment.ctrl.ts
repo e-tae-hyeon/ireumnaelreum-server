@@ -23,7 +23,7 @@ export async function writeComment(ctx: Context) {
 
 export async function getComments(ctx: Context) {
   try {
-    const { userId } = ctx.state.user;
+    const { userId } = ctx.state.user ?? { userId: null };
     const { id } = <{ id: string }>ctx.params;
 
     const comments = await commentService.getComments({
@@ -32,6 +32,23 @@ export async function getComments(ctx: Context) {
     });
 
     ctx.body = comments;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function likeComment(ctx: Context) {
+  try {
+    const { userId } = ctx.state.user;
+    console.log(ctx.state.user);
+    const { commentId } = <{ commentId: string }>ctx.params;
+
+    const comment = await commentService.likeComment(
+      parseInt(commentId, 10),
+      userId
+    );
+
+    ctx.body = comment;
   } catch (err) {
     console.error(err);
   }

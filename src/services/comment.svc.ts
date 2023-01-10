@@ -53,6 +53,16 @@ export default class CommentService {
     return commentsWithIsLiked;
   }
 
+  async likeComment(commentId: number, userId: number) {
+    await db.commentLike.create({
+      data: {
+        commentId,
+        userId,
+      },
+    });
+    return await this.syncCommentLikeCount(commentId);
+  }
+
   async getCommentLikedMap({
     commentIds,
     userId,
@@ -73,6 +83,23 @@ export default class CommentService {
       acc[cur.commentId] = cur;
       return acc;
     }, {});
+  }
+
+  async syncCommentLikeCount(commentId: number) {
+    const count = await db.commentLike.count({
+      where: {
+        commentId,
+      },
+    });
+    await db.comment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        likes: count,
+      },
+    });
+    return count;
   }
 }
 

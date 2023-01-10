@@ -6,5 +6,6 @@ const router = new Router();
 
 router.post("/", requireUser, CommentCtrl.writeComment);
 router.get("/", CommentCtrl.getComments);
+router.post("/:commentId/like", requireUser, CommentCtrl.likeComment);
 
 export default router;
