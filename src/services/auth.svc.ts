@@ -29,6 +29,11 @@ export default class AuthService {
             id,
           },
         },
+        Profile: {
+          create: {
+            nickname: "늠름이",
+          },
+        },
       },
     });
 

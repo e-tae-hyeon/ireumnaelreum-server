@@ -30,11 +30,20 @@ model SocialAccount {
 model User {
   id            Int            @id @default(autoincrement())
   socialAccount SocialAccount?
+  Profile       Profile?
 
   Token Token[]
   Item  Item[]
 
   createdAt DateTime @default(now())
+}
+
+model Profile {
+  id       Int    @id @default(autoincrement())
+  nickname String @default("늠름이")
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
 }
 
 model Token {
