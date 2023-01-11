@@ -1,7 +1,7 @@
 import { Context } from "koa";
 import { CLIENT_URL } from "../common/string";
 import AuthService from "../services/auth.svc";
-import { setTokenCookie } from "../utils/cookies";
+import { clearTokenCookie, setTokenCookie } from "../utils/cookies";
 import { getTokenKakao, getUserKakao } from "../utils/social/kakao";
 
 const authService = new AuthService();
@@ -22,6 +22,17 @@ export async function authByKakao(ctx: Context) {
 
     ctx.status = 204;
     ctx.redirect(CLIENT_URL);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function logout(ctx: Context) {
+  try {
+    clearTokenCookie(ctx);
+
+    ctx.status = 204;
+    ctx.body = null;
   } catch (err) {
     console.error(err);
   }
