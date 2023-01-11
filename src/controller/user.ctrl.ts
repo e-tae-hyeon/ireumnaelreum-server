@@ -16,3 +16,14 @@ export async function updateProfile(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function getMyItems(ctx: Context) {
+  try {
+    const { userId } = ctx.state.user;
+    const myItems = await userService.getWrittenItems(userId);
+
+    ctx.body = myItems;
+  } catch (err) {
+    console.error(err);
+  }
+}

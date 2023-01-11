@@ -9,5 +9,6 @@ router.get("/", (ctx: Context) => {
   ctx.body = ctx.state.user;
 });
 router.put("/profile", requireUser, UserCtrl.updateProfile);
+router.get("/item", requireUser, UserCtrl.getMyItems);
 
 export default router;

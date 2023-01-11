@@ -13,6 +13,27 @@ export default class UserService {
       },
     });
   }
+
+  async getWrittenItems(userId: number) {
+    const items = await db.item.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        user: {
+          include: {
+            Profile: true,
+          },
+        },
+        ItemStats: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return items;
+  }
 }
 
 type UpdateProfileParam = {
