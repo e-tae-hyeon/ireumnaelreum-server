@@ -8,6 +8,6 @@ export default async function requireUser(ctx: Context, next: Next) {
 
     return next();
   } catch (err) {
-    console.error(err);
+    ctx.throw(401);
   }
 }

@@ -7,5 +7,6 @@ const router = new Router();
 router.get("/callback/kakao", AuthCtrl.authByKakao);
 router.delete("/logout", AuthCtrl.logout);
 router.delete("/", requireUser, AuthCtrl.unregister);
+router.post("/refresh", AuthCtrl.refresh);
 
 export default router;

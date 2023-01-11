@@ -5,7 +5,7 @@ import * as UserCtrl from "../controller/user.ctrl";
 
 const router = new Router();
 
-router.get("/", (ctx: Context) => {
+router.get("/", requireUser, (ctx: Context) => {
   ctx.body = ctx.state.user;
 });
 router.put("/profile", requireUser, UserCtrl.updateProfile);

@@ -5,12 +5,13 @@ export function setTokenCookie(
   tokens: { accessToken: string; refreshToken: string }
 ) {
   ctx.cookies.set("access_token", tokens.accessToken, {
-    // httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 3,
+    httpOnly: true,
+    // maxAge: 1000 * 60 * 60 * 3,
+    maxAge: 1000 * 10,
   });
 
   ctx.cookies.set("refresh_token", tokens.refreshToken, {
-    // httpOnly: true,
+    httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });
 }

@@ -52,3 +52,21 @@ export async function unregister(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function refresh(ctx: Context) {
+  try {
+    const refreshToken =
+      ctx.cookies.get("refresh_token") ??
+      (<{ refreshToken: string }>ctx.request.body).refreshToken;
+
+    if (!refreshToken) throw new Error("Bad request");
+
+    const tokens = await authService.refreshToken(refreshToken);
+
+    setTokenCookie(ctx, tokens);
+    ctx.body = tokens;
+  } catch (err) {
+    console.error(err);
+    ctx.throw(400);
+  }
+}

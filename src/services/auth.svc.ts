@@ -82,7 +82,7 @@ export default class AuthService {
     });
 
     if (!tokenItem) throw new Error("Token not found");
-    if (!tokenItem.blocked) throw new Error("Token is blocked");
+    if (tokenItem.blocked) throw new Error("Token is blocked");
     if (tokenItem.rotationCounter !== rotationCounter) {
       await db.token.update({
         where: {
