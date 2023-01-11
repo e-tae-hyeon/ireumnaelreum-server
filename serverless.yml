@@ -1,0 +1,22 @@
+service: ireumnaelreum
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-northeast-2
+  stage: dev
+
+functions:
+  app:
+    handler: src/server.handler
+    events:
+      - httpApi: "*"
+
+custom:
+  serverless-offline:
+    httpPort: 4000
