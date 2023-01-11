@@ -42,6 +42,14 @@ export default class AuthService {
     return { user: newUser, tokens };
   }
 
+  async removeUser(userId: number) {
+    await db.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+  }
+
   async generateTokens(userId: number, tokenItem?: Token) {
     const token = tokenItem ?? (await this.createTokenItem(userId));
 

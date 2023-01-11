@@ -37,3 +37,18 @@ export async function logout(ctx: Context) {
     console.error(err);
   }
 }
+
+export async function unregister(ctx: Context) {
+  try {
+    const { userId } = ctx.state.user;
+
+    await authService.removeUser(userId);
+
+    clearTokenCookie(ctx);
+
+    ctx.status = 204;
+    ctx.body = null;
+  } catch (err) {
+    console.error(err);
+  }
+}
