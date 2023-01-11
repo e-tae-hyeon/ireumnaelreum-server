@@ -6,8 +6,7 @@ export function setTokenCookie(
 ) {
   ctx.cookies.set("access_token", tokens.accessToken, {
     httpOnly: true,
-    // maxAge: 1000 * 60 * 60 * 3,
-    maxAge: 1000 * 10,
+    maxAge: 1000 * 60 * 60 * 3,
   });
 
   ctx.cookies.set("refresh_token", tokens.refreshToken, {
