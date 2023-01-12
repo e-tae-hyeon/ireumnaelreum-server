@@ -14,7 +14,10 @@ const router = new Router();
 app.use(
   cors({
     origin: (ctx: Context): any => {
-      const whiteList = ["http://localhost:3000"];
+      const whiteList = [
+        "https://ireumnaelreum.vercel.app",
+        "http://localhost:3000",
+      ];
       if (whiteList.indexOf(ctx.request.header.origin as string) !== -1) {
         return ctx.request.header.origin;
       }

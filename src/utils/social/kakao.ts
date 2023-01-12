@@ -4,10 +4,7 @@ export async function getTokenKakao(code: string) {
   const params = {
     grant_type: "authorization_code",
     client_id: process.env.KAKAO_CLIENT_ID,
-    redirect_uri:
-      process.env.NODE_ENV === "production"
-        ? ""
-        : "http://localhost:4000/api/auth/callback/kakao",
+    redirect_uri: process.env.END_POINT + "/api/auth/callback/kakao",
     code,
     client_secret: process.env.KAKAO_CLIENT_SECRET,
   };

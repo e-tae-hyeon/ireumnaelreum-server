@@ -40,7 +40,7 @@ export default class ItemService {
         ItemStats: true,
       },
     });
-    const endCursor = items.at(-1)?.id ?? null;
+    const endCursor = items[items.length - 1]?.id ?? null;
     const hasNextPage = endCursor
       ? (await db.item.count({
           where: {

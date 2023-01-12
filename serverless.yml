@@ -2,6 +2,7 @@ service: ireumnaelreum
 frameworkVersion: "3"
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-offline
 
@@ -20,3 +21,10 @@ functions:
 custom:
   serverless-offline:
     httpPort: 4000
+
+package:
+  patterns:
+    - "!node_modules/.prisma/client/libquery_engine-*"
+    - "node_modules/.prisma/client/libquery_engine-rhel-*"
+    - "!node_modules/prisma/libquery_engine-*"
+    - "!node_modules/@prisma/engines/**"
